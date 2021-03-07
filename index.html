@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>clock</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<style>
+    *{
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+    }
+    #mainBox{
+        height: 100vh;
+        background-image:linear-gradient(#fff,pink) ;
+    }
+    h2{
+        text-align: center;
+        color: #888;
+        transform: translateY(30px);
+    }
+    .day{
+        color: blue;
+        font-size: 18px;
+        text-align: center;
+        transform: translateY(60px);
+    }
+    .dot{
+        animation:dotStatus 1s linear 1s infinite alternate;
+    }
+    @keyframes dotStatus{
+        from{
+            opacity: 0;
+        }
+        to{
+            opacity: 1;
+        }
+    }
+    .clockBox{
+        top: calc(30vh - 100px);
+        left: calc(50vw - 100px);
+        width: 200px;
+        height: 200px;
+        border: 1px solid red;
+        position: relative;
+        border-radius: 30%;
+        background-image: url(./images/17854949.jpg);
+        background-size: cover;
+    }
+    .second,.minute,.hour{
+        transform-origin:0 100%;
+        position: absolute;
+        left: 100px;
+        border: 1px solid blue;
+        background: blue;
+        color: red;
+    }
+    .second{
+        top: 0;
+        width: 1px;
+        height: 100px;
+    }
+    .minute{
+        top: 10px;
+        width: 2px;
+        height: 90px;
+    }
+    .hour{
+        top: 20px;
+        width: 3px;
+        height: 80px;
+    }
+    .tips{
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        text-align: center;
+        background-color: blue;
+        color: #fff;
+    }
+    .tips:first-child{
+        position: absolute;
+        left: 90px;
+    }
+    .tips:nth-child(2){
+        left: 178px;
+        top: 90px;
+    }
+    .tips:nth-child(3){
+        left: 90px;
+        top: 178px;
+    }
+    .tips:nth-child(4){
+        top: 90px;
+    }
+</style>
+<body>
+    <div id="mainBox">
+        <h2>一个时钟</h2>
+        <div class="day">
+            <span>{{y}}</span>
+            <span class="dot">:</span>
+            <span>{{_m}}</span>
+            <span class="dot">:</span>
+            <span>{{d}}</span>
+            <span>星期{{w}}</span>
+        </div>
+        <div class="clockBox">
+            <span class="tips">12</span>
+            <span class="tips">3</span>
+            <span class="tips">6</span>
+            <span class="tips">9</span>
+            <span class="second" :style="`transform: rotate(${s*6}deg);`">{{s}}</span>
+            <span class="minute" :style="`transform: rotate(${m*6}deg);`">{{m}}</span>
+            <span class="hour" :style="`transform: rotate(${h*30}deg);`">{{h}}</span>
+        </div>
+    </div>
+</body>
+<script>
+    new Vue({
+        el:'#mainBox',
+        data:{
+            s:0,
+            m:0,
+            h:0,
+            w:'',
+            d:0,
+            _m:0,
+            y:0
+        },
+        created(){
+            this.getTime()
+        },
+        methods:{
+            _getTime(){
+                let date=new Date()
+                this.s=date.getSeconds()
+                this.m=date.getMinutes()
+                this.h=date.getHours()
+                let _w=date.getDay()
+                this.d=date.getDate()
+                this._m=date.getMonth()
+                this.y=date.getFullYear()
+                switch(_w){
+                    case 0:
+                        this.w='日';
+                        break;
+                    case 1:
+                        this.w='一';
+                        break;
+                    case 2:
+                        this.w='二';
+                        break;
+                    case 3:
+                        this.w='三';
+                        break;
+                    case 4:
+                        this.w='四';
+                        break;
+                    case 5:
+                        this.w='五';
+                        break;
+                    default:
+                        this.w='六';
+                }
+            },
+            getTime(){
+                setInterval(this._getTime,1000)
+            },
+        }
+    })
+</script>
+    
+</html>
